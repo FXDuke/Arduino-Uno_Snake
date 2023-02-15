@@ -4,8 +4,8 @@
 
 // LED Variables
 
-int ScreenSize_X = 200;
-int ScreenSize_Y = 200;
+int ScreenSize_X = 37;
+int ScreenSize_Y = 27;
 
 int ScreenMap_LED[ScreenSize_Y][ScreenSize_X] = {
   {{1,4,7,10},{2,5,8,11}...}, // screen map for getting the pin number of the led
