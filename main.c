@@ -12,7 +12,6 @@ int ScreenMap_LED[ScreenSize_Y][ScreenSize_X] = {
 };
 
 bool SCREENCHANGED = false; // Change to true when turning LED on, this will make it so LED's are not being updated when nothing has been changed
-// for buttons
 
 bool ScreenMap[ScreenSize_Y][ScreenSize_X][1] = {
   {{true},{false}...}, // add all digital signals to each x here
