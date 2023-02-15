@@ -151,6 +151,6 @@ void loop() {
     refreshScreen();
   }
   
-  delay(10);
+  delay(10); // limitting refresh rate to 100/s
 }
 
