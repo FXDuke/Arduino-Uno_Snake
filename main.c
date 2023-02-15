@@ -135,10 +135,6 @@ void loop() {
   _RefreshRate = millis()-_OldRate;
   _OldRate = _RefreshRate;
   
-  if (SCREENCHANGED == true) {
-    refreshScreen();
-  }
-  
   if (ButtonCooldown == 0) {
     int ButtonHeld[2] = ButtonDown();
     if (ButtonHeld[1]>Minimum_Button_Read) {
@@ -148,6 +144,10 @@ void loop() {
     }
   } else {
     ButtonCooldown = (ButtonCooldown-_RefreshRate>0) ? ButtonCooldown-_RefreshRate : 0;
+  }
+  
+  if (SCREENCHANGED == true) {
+    refreshScreen();
   }
   
   delay(10);
