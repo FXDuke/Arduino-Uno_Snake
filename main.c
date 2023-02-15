@@ -19,7 +19,7 @@ bool ScreenMap[ScreenSize_Y][ScreenSize_X][1] = {
 
 // Snake Variables 
 
-bool Gameplay = false;
+bool Gameplay = false; // will update game when true
 int Speed = 1;
 int Direction = 1; // or -1 
 bool Up = false;
@@ -43,7 +43,7 @@ int _OldRate = millis();
 
 // LED Manager
 
-void iterateLED(void (*returnFunction)(int,int)) {
+void iterateLED(void (*returnFunction)(int,int)) { // function passed is called for every led
   for (int Index_Y = 0; Index_Y < ScreenSize_Y; Index_Y++) {
     for (int Index_X = 0; Index_X < ScreenSize_X; Index_X++) {
       returnFunction(Index_Y,Index_X);
@@ -51,7 +51,7 @@ void iterateLED(void (*returnFunction)(int,int)) {
   }
 }
 
-void screenOff() {
+void screenOff() { // turns all LED's off 
   void TurnOff(int Y, int X) {
     ScreenMap[Y][X][0] = false; 
   }
@@ -59,7 +59,7 @@ void screenOff() {
   SCREENCHANGED = true;
 }
 
-void screenBorder() {
+void screenBorder() { // Enables a 1 LED border surrounding the screen
   for (int Index_Y = 0; Index_Y < ScreenSize_Y; Index_Y++) 
     if (Index_Y == 0 || Index_Y == ScreenSize_Y-1) { // For top of screen and botton
       for (int Index_X = 0; Index_X < ScreenSize_X; Index_X++) {
@@ -73,7 +73,12 @@ void screenBorder() {
   SCREENCHANGED = true;
 }
 
-void refreshScreen() {
+void updateLED(int X,int Y, bool Value) { // set individual LED's value
+  ScreenMap[Y][X][0] = Value;
+  SCREENCHANGED = true;
+}
+
+void refreshScreen() { // Used in the loop to refresh the screen when an LED's state has been changed
   void refreshLED(int X,int Y) {
     if (ScreenMap[Y][X][0] == true) {
       digitalWrite(ScreenMap_LED[Y][X], HIGH);
@@ -85,14 +90,9 @@ void refreshScreen() {
   SCREENCHANGED = false;
 }
 
-void updateLED(int X,int Y, bool Value) {
-  ScreenMap[Y][X][0] = Value;
-  SCREENCHANGED = true;
-}
-
 // Button Manager
 
-int[2] buttonDown() {
+int[2] buttonDown() { // returns which button has the highest analog signal
   int greatest = 0;
   int FinalPin;
   for (int Index = 0; Index < ControlSize; Index++) {
@@ -107,7 +107,7 @@ int[2] buttonDown() {
 
 // Snake Movements
 
-void MoveSnake() {
+void MoveSnake() { // "Moves" the snake and updates the screen accordingly
   updateLED(Size[0][0],Size[0][1],false);
   if (Up == true) {
     Size[0][1] += Direction;
@@ -120,13 +120,14 @@ void MoveSnake() {
     Size[Index] = Size[Index-1];
     updateLED(Size[Index][0],Size[Index][1],true);
   }
+  SCREENCHANGED = true;
 }
 
 // Main Functions 
 
 void setup() {
   Serial.begin(9600);
-  screenBorder();
+  screenBorder(); // initializes screen border
   updateLED(round(ScreenSize_X/2),round(ScreenSize_Y/2),true); // snake start position
 }
 
