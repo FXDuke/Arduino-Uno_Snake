@@ -51,11 +51,12 @@ void iterateLED(void (*returnFunction)(int,int)) { // function passed is called 
   }
 }
 
+void __turnOff(int Y, int X) {
+  ScreenMap[Y][X][0] = false; 
+}
+
 void screenOff() { // turns all LED's off 
-  void TurnOff(int Y, int X) {
-    ScreenMap[Y][X][0] = false; 
-  }
-  iterateLED(TurnOff);
+  iterateLED(__turnOff);
   SCREENCHANGED = true;
 }
 
@@ -78,15 +79,16 @@ void updateLED(int X,int Y, bool Value) { // set individual LED's value
   SCREENCHANGED = true;
 }
 
-void refreshScreen() { // Used in the loop to refresh the screen when an LED's state has been changed
-  void refreshLED(int X,int Y) {
-    if (ScreenMap[Y][X][0] == true) {
-      digitalWrite(ScreenMap_LED[Y][X], HIGH);
-    } else {
-      digitalWrite(ScreenMap_LED[Y][X], LOW);
-    }
+void __refreshLED(int X,int Y) {
+  if (ScreenMap[Y][X][0] == true) {
+    digitalWrite(ScreenMap_LED[Y][X], HIGH);
+  } else {
+    digitalWrite(ScreenMap_LED[Y][X], LOW);
   }
-  iterateLED(refreshLED);
+}
+
+void refreshScreen() { // Used in the loop to refresh the screen when an LED's state has been changed
+  iterateLED(__refreshLED);
   SCREENCHANGED = false;
 }
 
